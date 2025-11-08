@@ -40,13 +40,15 @@ def block_check(sudoku, row_no, column_no):
     @return: bool - True if the block is correct, False otherwise.
     """
 
-    # TODO: use set() to create a new set to record checked position. Since set doesn't allow unique items, if the set contains the same number, we know that there is a conflict
-
+    checked_nums = set()
     for i in range(row_no, row_no + 3):
         for j in range(column_no, column_no + 3):
             num = sudoku[i][j]
-
-            # TODO: If the number is not 0, then we check if the number is already in the set. If the number in the set, it means this number exists, directly return False; otherwise add this number to the set, and continue until all numbers are checked.
+            if num != 0:
+                if num in checked_nums:
+                    return False
+                else:
+                    checked_nums.add(num)
     return True
 
 

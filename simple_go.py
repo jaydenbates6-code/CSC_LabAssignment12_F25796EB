@@ -1,43 +1,46 @@
-# The program is the 1st part of the sudoku checking, checking on the rows.
-# The program sends a sudoku matrix to function `row_check()`,
-# the function would check if the specific row is valid.
+# This program sends a Go board to the function `who_won()`, and the function
+# returns who won the game based on the board.
+#
+# The scoring rules of Go is quite complex, but in this exercise, we just
+# count the number of pieces each player has on the game board.
+# Also, please notice that we don't have the size limitation on the board.
 
 
-def row_check(sudoku, row_no):
+def who_won(board):
     """
-    Checks if a given row in a Sudoku grid is valid.
-    A row is valid if numbers 1 to 9 appear at most once (0s are ignored).
+    Determines the winner based on the number of stones on the board.
 
-    @param sudoku [list]: list of list of int, the Sudoku grid
-    @param row_no [list]: the index of the row to check (0 based)
+    @param board [list]: list of list of int, which is the Go board.
+        On the board:
+            0 represents the empty spot
+            1 represents the player 1's stone
+            2 represents the player 2's stone
 
-    @return [bool], returns True if the row is correct, False otherwise.
+    @return [int]: return 1 if player 1 won, 2 if player 2 won, 0 if tie.
     """
+    player1_count = 0
+    player2_count = 0
 
-    nums = set()
-    row_to_check = sudoku[row_no]  # get the row to check
 
-    for num in row_to_check:
-        if num != 0:
-            if num in nums:
-                return False
-            else:
-                nums.add(num)
-    return True
+    # TODO: initialize two variables to record the stones of two players
+    for row in board:
+        for spot in row:
+            if spot == 1:
+                player1_count += 1
+            elif spot == 2:
+                player2_count += 1
+
+
+    # TODO: use two level loop to check the value of every spot, which is the item of the nested list, read the documentation for details
+
+    if player1_count > player2_count:
+        return 1
+    elif player2_count > player1_count:
+        return 2
+    else:
+        return 0
 
 
 if __name__ == "__main__":
-    sudoku = [
-        [9, 0, 0, 0, 8, 0, 3, 0, 0],
-        [2, 0, 0, 2, 5, 0, 7, 0, 0],
-        [0, 2, 0, 3, 0, 0, 0, 0, 4],
-        [2, 9, 4, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 7, 3, 0, 5, 6, 0],
-        [7, 0, 5, 0, 6, 0, 4, 0, 0],
-        [0, 0, 7, 8, 0, 3, 9, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 3],
-        [3, 0, 0, 0, 0, 0, 0, 0, 2],
-    ]
-
-    print(row_check(sudoku, 0))  # True (no duplicates)
-    print(row_check(sudoku, 1))  # False (two 2s)
+    board = [[1, 0, 2], [2, 1, 1], [1, 2, 0]]
+    print(who_won(board))
